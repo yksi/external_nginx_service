@@ -1,0 +1,183 @@
+version: '3.3'
+
+networks:
+  private:
+    driver: overlay
+  gateway:
+    external:
+      name: eservia-gateway
+
+configs:
+  nginx-gateway:
+    file: ./gateway/nginx.conf
+  nginx-gateway-subconfd-catch:
+    file: ./gateway/subconf.d/catch.conf
+  nginx-gateway-subconfd-proxy:
+    file: ./gateway/subconf.d/proxy.conf
+  nginx-gateway-subconfd-broadcast:
+    file: ./gateway/subconf.d/broadcast.conf
+  nginx-gateway-subconfd-cors:
+    file: ./gateway/subconf.d/cors.conf
+  nginx-gateway-subconfd-media:
+    file: ./gateway/subconf.d/media.conf
+  nginx-gateway-confd-rabbitmq:
+    file: ./gateway/conf.d/rabbitmq.conf
+  nginx-gateway-confd-admin:
+    file: ./gateway/conf.d/admin.conf
+  nginx-gateway-confd-business:
+    file: ./gateway/conf.d/business.conf
+  nginx-gateway-confd-business-beauty:
+    file: ./gateway/conf.d/business-beauty.conf
+  nginx-gateway-confd-business-health:
+    file: ./gateway/conf.d/business-health.conf
+  nginx-gateway-confd-booking-beauty:
+    file: ./gateway/conf.d/booking-beauty.conf
+  nginx-gateway-confd-booking-health:
+    file: ./gateway/conf.d/booking-health.conf
+  nginx-gateway-confd-inventory:
+    file: ./gateway/conf.d/inventory.conf
+  nginx-gateway-confd-finance:
+    file: ./gateway/conf.d/finance.conf
+  nginx-gateway-confd-booking-resto:
+    file: ./gateway/conf.d/booking-resto.conf
+  nginx-gateway-confd-customer:
+    file: ./gateway/conf.d/customer.conf
+  nginx-gateway-confd-delivery-dashboard:
+    file: ./gateway/conf.d/delivery-dashboard.conf
+  nginx-gateway-confd-delivery:
+    file: ./gateway/conf.d/delivery.conf
+  nginx-gateway-confd-department:
+    file: ./gateway/conf.d/department.conf
+  nginx-gateway-confd-media:
+    file: ./gateway/conf.d/media.conf
+  nginx-gateway-confd-marketing:
+    file: ./gateway/conf.d/marketing.conf
+  nginx-gateway-confd-nomenclature:
+    file: ./gateway/conf.d/nomenclature.conf
+  nginx-gateway-confd-order:
+    file: ./gateway/conf.d/order.conf
+  nginx-gateway-confd-personnel:
+    file: ./gateway/conf.d/personnel.conf
+  nginx-gateway-confd-resto-dashboard:
+    file: ./gateway/conf.d/resto-dashboard.conf
+  nginx-gateway-confd-user:
+    file: ./gateway/conf.d/user.conf
+  nginx-gateway-confd-application:
+    file: ./gateway/conf.d/application.conf
+  nginx-gateway-confd-websocket:
+    file: ./gateway/conf.d/websocket.conf
+  nginx-gateway-confd-storage:
+    file: ./gateway/conf.d/storage.conf
+  nginx-gateway-confd-broadcast:
+    file: ./gateway/conf.d/broadcast.conf
+  nginx-gateway-confd-swarm:
+    file: ./gateway/conf.d/swarm.conf
+  nginx-gateway-confd-messaging:
+    file: ./gateway/conf.d/messaging.conf
+
+services:
+  gateway:
+    image: $DOCKER_REPO_URL/nginx-gateway
+    ports:
+      - 80:80       # application
+      - 443:443
+      - 888:888     # swarm
+      - 3030:3030   # broadcast
+      - 5201:5201   # user
+      - 8000:8000   # resto-dashboard
+      - 8001:8001   # media
+      - 8002:8002   # marketing
+      - 8003:8003   # personnel
+      - 8004:8004   # delivery
+      - 8005:8005   # booking-resto
+      - 8006:8006   # order
+      - 8007:8007   # delivery-dashboard
+      - 8008:8008   # nomenclature
+      - 8009:8009   # department
+      - 8010:8010   # customer
+      - 8011:8011   # websocket
+      - 8012:8012   # storage
+      - 8082:8082   # admin
+      - 8083:8083   # business
+      - 8084:8084   # business-beauty
+      - 8085:8085   # booking-beauty
+      - 8086:8086   # inventory
+      - 8087:8087   # finance
+      - 8088:8088   # business-health
+      - 8089:8089   # booking-health
+      - 8090:8090   # messaging
+      - 15672:15672 # rabbitmq
+    networks:
+      - private
+      - gateway
+    configs:
+      - source: nginx-gateway
+        target: /etc/nginx/nginx.conf
+      - source: nginx-gateway-subconfd-catch
+        target: /etc/nginx/subconf.d/catch.conf
+      - source: nginx-gateway-subconfd-proxy
+        target: /etc/nginx/subconf.d/proxy.conf
+      - source: nginx-gateway-subconfd-broadcast
+        target: /etc/nginx/subconf.d/broadcast.conf
+      - source: nginx-gateway-subconfd-cors
+        target: /etc/nginx/subconf.d/cors.conf
+      - source: nginx-gateway-subconfd-media
+        target: /etc/nginx/subconf.d/media.conf
+      - source: nginx-gateway-confd-rabbitmq
+        target: /etc/nginx/conf.d/rabbitmq.conf
+      - source: nginx-gateway-confd-admin
+        target: /etc/nginx/conf.d/admin.conf
+      - source: nginx-gateway-confd-business
+        target: /etc/nginx/conf.d/business.conf
+      - source: nginx-gateway-confd-business-beauty
+        target: /etc/nginx/conf.d/business-beauty.conf
+      - source: nginx-gateway-confd-business-health
+        target: /etc/nginx/conf.d/business-health.conf
+      - source: nginx-gateway-confd-booking-beauty
+        target: /etc/nginx/conf.d/booking-beauty.conf
+      - source: nginx-gateway-confd-booking-health
+        target: /etc/nginx/conf.d/booking-health.conf
+      - source: nginx-gateway-confd-inventory
+        target: /etc/nginx/conf.d/inventory.conf
+      - source: nginx-gateway-confd-finance
+        target: /etc/nginx/conf.d/finance.conf
+      - source: nginx-gateway-confd-booking-resto
+        target: /etc/nginx/conf.d/booking-resto.conf
+      - source: nginx-gateway-confd-customer
+        target: /etc/nginx/conf.d/customer.conf
+      - source: nginx-gateway-confd-delivery-dashboard
+        target: /etc/nginx/conf.d/delivery-dashboard.conf
+      - source: nginx-gateway-confd-delivery
+        target: /etc/nginx/conf.d/delivery.conf
+      - source: nginx-gateway-confd-department
+        target: /etc/nginx/conf.d/department.conf
+      - source: nginx-gateway-confd-media
+        target: /etc/nginx/conf.d/media.conf
+      - source: nginx-gateway-confd-marketing
+        target: /etc/nginx/conf.d/marketing.conf
+      - source: nginx-gateway-confd-nomenclature
+        target: /etc/nginx/conf.d/nomenclature.conf
+      - source: nginx-gateway-confd-order
+        target: /etc/nginx/conf.d/order.conf
+      - source: nginx-gateway-confd-personnel
+        target: /etc/nginx/conf.d/personnel.conf
+      - source: nginx-gateway-confd-resto-dashboard
+        target: /etc/nginx/conf.d/resto-dashboard.conf
+      - source: nginx-gateway-confd-user
+        target: /etc/nginx/conf.d/user.conf
+      - source: nginx-gateway-confd-application
+        target: /etc/nginx/conf.d/application.conf
+      - source: nginx-gateway-confd-websocket
+        target: /etc/nginx/conf.d/websocket.conf
+      - source: nginx-gateway-confd-storage
+        target: /etc/nginx/conf.d/storage.conf
+      - source: nginx-gateway-confd-broadcast
+        target: /etc/nginx/conf.d/broadcast.conf
+      - source: nginx-gateway-confd-swarm
+        target: /etc/nginx/conf.d/swarm.conf
+      - source: nginx-gateway-confd-messaging
+        target: /etc/nginx/conf.d/messaging.conf
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
